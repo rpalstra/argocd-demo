@@ -1,0 +1,12 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ArgoCD
+spec:
+  dex:
+    image: quay.io/ablock/dex
+    openShiftOAuth: true
+    version: openshift-connector
+  rbac:
+    policy: |
+      g, system:cluster-admins, role:admin
+  server:
+    route: true
