@@ -1,15 +1,21 @@
-apiVersion: argoproj.io/v1alpha1
-kind: ArgoCD
-metadata:
-  name: argocd
-  namespace: argocd
-spec:
-  dex:
-    image: quay.io/ablock/dex
-    openShiftOAuth: true
-    version: openshift-connector
-  rbac:
-    policy: |
-      g, system:cluster-admins, role:admin
-  server:
-    route: true
+apiVersion: v1
+kind: List
+items:
+- apiVersion: argoproj.io/v1alpha1
+  kind: ArgoCD
+  metadata:
+    name: argocd
+    namespace: argocd
+  spec:
+    dex:
+      image: quay.io/redhat-cop/dex
+      openShiftOAuth: true
+      version: v2.22.0-openshift
+    rbac:
+      defaultPolicy: 'role:readonly'
+      policy: |
+        g, system:cluster-admins, role:admin
+      scopes: '[groups]'
+    server:
+      route:
+        enabled: true
