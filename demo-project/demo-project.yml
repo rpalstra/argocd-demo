@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: List
+items:
+- apiVersion: argoproj.io/v1alpha1
+  kind: AppProject
+  metadata:
+    name: demo-project
+    namespace: argocd
+  spec:
+    description: demo-project
+    destinations:
+      - namespace: demo-project
+        server: 'https://kubernetes.default.svc'
+    sourceRepos:
+      - 'git@github.com:rpalstra/argocd-demo.git'
