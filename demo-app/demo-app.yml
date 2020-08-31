@@ -74,7 +74,7 @@ items:
     source:
       git:
         ref: develop
-        uri: git@github.com:spring-projects/spring-petclinic.git
+        uri: https://github.com/spring-projects/spring-petclinic.git
       type: Git
     strategy:
       sourceStrategy:
