@@ -9,7 +9,23 @@ items:
   spec:
     description: demo-project
     destinations:
-      - namespace: demo-project
+      - namespace: demo-app
         server: 'https://kubernetes.default.svc'
     sourceRepos:
       - 'git@github.com:rpalstra/argocd-demo.git'
+- apiVersion: argoproj.io/v1alpha1
+  kind: Application
+  metadata:
+    name: demo-app
+    namespace: argocd
+  spec:
+    destination:
+      namespace: demo-app
+      server: 'https://kubernetes.default.svc'
+    source:
+      path: 'demo-app'
+      repoURL: 'git@github.com:rpalstra/argocd-demo.git'
+      targetRevision: HEAD
+      directory:
+        recurse: true
+    project: demo-project
