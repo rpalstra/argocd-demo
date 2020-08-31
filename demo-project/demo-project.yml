@@ -12,7 +12,7 @@ items:
       - namespace: demo-app
         server: 'https://kubernetes.default.svc'
     sourceRepos:
-      - 'git@github.com:rpalstra/argocd-demo.git'
+      - 'https://github.com/rpalstra/argocd-demo.git'
 - apiVersion: argoproj.io/v1alpha1
   kind: Application
   metadata:
@@ -24,7 +24,7 @@ items:
       server: 'https://kubernetes.default.svc'
     source:
       path: 'demo-app'
-      repoURL: 'git@github.com:rpalstra/argocd-demo.git'
+      repoURL: 'https://github.com/rpalstra/argocd-demo.git'
       targetRevision: HEAD
       directory:
         recurse: true
