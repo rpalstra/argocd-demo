@@ -75,7 +75,6 @@ items:
     runPolicy: Serial
     source:
       git:
-        ref: develop
         uri: https://github.com/spring-projects/spring-petclinic.git
       type: Git
     strategy:
