@@ -13,6 +13,9 @@ items:
         server: 'https://kubernetes.default.svc'
     sourceRepos:
       - 'https://github.com/rpalstra/argocd-demo.git'
+    clusterResourceWhitelist:
+      - group: ''
+        kind: Namespace
 - apiVersion: argoproj.io/v1alpha1
   kind: Application
   metadata:
