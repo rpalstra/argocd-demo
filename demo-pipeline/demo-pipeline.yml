@@ -73,9 +73,6 @@ items:
       type: RollingUpdate
     template:
       metadata:
-        annotations:
-          openshift.io/generated-by: OpenShiftNewApp
-        creationTimestamp: null
         labels:
           application: spring-petclinic
           deploymentConfig: spring-petclinic
