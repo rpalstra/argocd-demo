@@ -145,3 +145,42 @@ items:
         outputs:
         - name: image
           resource: app-image
+    - name: rollout-s2i-image
+      taskRef:
+        kind: Task
+        name: rollout-latest
+      params:
+      - name: namespace
+        value: demo-pipeline
+      - name: deployment
+        value: deployment/spring-petclinic
+      runAfter:
+      - build-s2i
+- apiVersion: tekton.dev/v1alpha1
+  kind: Task
+  metadata:
+    name: rollout-latest
+  spec:
+    inputs:
+      params:
+      - default: example
+        description: The name of the deploymentconfig to rollout
+        name: name
+        type: string
+      - default: example
+        description: The name of the namespace to rollout
+        name: namespace
+        type: string
+    steps:
+    - name: tag-and-rollout
+      image: quay.io/openshift/origin-cli:latest
+      resources: {}
+      workingDir: /workspace
+      command:
+      - /bin/bash
+      - -c
+      args:
+      - |-
+        set -e
+        oc rollout latest dc/$(inputs.params.name) -n $(inputs.params.namespace) || true
+        oc rollout status dc/$(inputs.params.name) -n $(inputs.params.namespace)
