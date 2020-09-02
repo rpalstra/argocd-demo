@@ -164,8 +164,8 @@ items:
     inputs:
       params:
       - default: example
-        description: The name of the deploymentconfig to rollout
-        name: name
+        description: The name of the deployment to rollout
+        name: deployment
         type: string
       - default: example
         description: The name of the namespace to rollout
