@@ -100,7 +100,7 @@ items:
                 name: https
                 protocol: TCP
         terminationGracePeriodSeconds: 150
-- apiVersion: tekton.dev/v1beta1
+- apiVersion: tekton.dev/v1alpha1
   kind: PipelineResource
   metadata:
     name: petclinic-image
@@ -109,7 +109,7 @@ items:
     params:
     - name: url
       value: image-registry.openshift-image-registry.svc:5000/demo-pipeline/spring-petclinic:latest
-- apiVersion: tekton.dev/v1beta1
+- apiVersion: tekton.dev/v1alpha1
   kind: PipelineResource
   metadata:
     name: petclinic-git
