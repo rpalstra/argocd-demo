@@ -181,5 +181,5 @@ items:
       args:
       - |-
         set -e
-        oc rollout latest $(params.name) -n $(params.namespace) || true
-        oc rollout status $(params.name) -n $(params.namespace)
+        oc rollout latest $(params.deployment) -n $(params.namespace) || true
+        oc rollout status $(params.deployment) -n $(params.namespace)
