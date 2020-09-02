@@ -104,7 +104,7 @@ items:
       matchLabels:
         deploymentConfig: spring-petclinic
     strategy:
-      type: Recreate
+      type: RollingUpdate
     template:
       metadata:
         annotations:
