@@ -11,6 +11,8 @@ items:
     destinations:
       - namespace: demo-app
         server: 'https://kubernetes.default.svc'
+      - namespace: demo-pipeline
+        server: 'https://kubernetes.default.svc'
     sourceRepos:
       - 'https://github.com/rpalstra/argocd-demo.git'
     clusterResourceWhitelist:
