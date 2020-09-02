@@ -50,3 +50,17 @@ items:
       directory:
         recurse: true
     project: demo-project
+- apiVersion: argoproj.io/v1alpha1
+  kind: Application
+  metadata:
+    name: tekton
+    namespace: argocd
+  spec:
+    project: default
+    source:
+      repoURL: 'https://github.com/rpalstra/argocd-demo.git'
+      path: tekton
+      targetRevision: HEAD
+    destination:
+      server: 'https://kubernetes.default.svc'
+      namespace: openshift-operators
