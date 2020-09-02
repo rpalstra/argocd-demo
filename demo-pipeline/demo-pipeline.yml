@@ -182,5 +182,5 @@ items:
       args:
       - |-
         set -e
-        oc rollout latest dc/$(inputs.params.name) -n $(inputs.params.namespace) || true
-        oc rollout status dc/$(inputs.params.name) -n $(inputs.params.namespace)
+        oc rollout latest $(params.inputs.name) -n $(params.inputs.namespace) || true
+        oc rollout status $(params.inputs.name) -n $(params.inputs.namespace)
