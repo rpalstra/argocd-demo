@@ -156,13 +156,13 @@ items:
         value: deployment/spring-petclinic
       runAfter:
       - build-s2i
-- apiVersion: tekton.dev/v1alpha1
+- apiVersion: tekton.dev/v1beta1
   kind: Task
   metadata:
     name: rollout-latest
   spec:
-    inputs:
-      params:
+    params:
+      inputs:
       - default: example
         description: The name of the deployment to rollout
         name: deployment
