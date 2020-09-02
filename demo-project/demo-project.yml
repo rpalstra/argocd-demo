@@ -32,3 +32,19 @@ items:
       directory:
         recurse: true
     project: demo-project
+- apiVersion: argoproj.io/v1alpha1
+  kind: Application
+  metadata:
+    name: demo-pipeline
+    namespace: argocd
+  spec:
+    destination:
+      namespace: demo-pipeline
+      server: 'https://kubernetes.default.svc'
+    source:
+      path: 'demo-pipeline'
+      repoURL: 'https://github.com/rpalstra/argocd-demo.git'
+      targetRevision: HEAD
+      directory:
+        recurse: true
+    project: demo-project
