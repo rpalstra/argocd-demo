@@ -1,0 +1,145 @@
+apiVersion: v1
+kind: List
+items:
+- apiVersion: v1
+  kind: Namespace
+  metadata:
+    name: demo-pipeline
+  spec:
+    finalizers:
+    - kubernetes
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      description: spring-petclinic http port.
+    labels:
+      app: spring-petclinic
+      app.kubernetes.io/component: spring-petclinic
+      app.kubernetes.io/instance: spring-petclinic
+      application: spring-petclinic
+    name: spring-petclinic
+  spec:
+    ports:
+      - port: 8080
+        targetPort: 8080
+    selector:
+      deploymentConfig: spring-petclinic
+- apiVersion: route.openshift.io/v1
+  kind: Route
+  metadata:
+    annotations:
+      description: Route for spring-petclinic http service.
+    labels:
+      app: spring-petclinic
+      app.kubernetes.io/component: spring-petclinic
+      app.kubernetes.io/instance: spring-petclinic
+      application: spring-petclinic
+    name: spring-petclinic
+  spec:
+    to:
+      kind: Service
+      name: spring-petclinic
+    tls:
+      termination: edge
+- apiVersion: image.openshift.io/v1
+  kind: ImageStream
+  metadata:
+    annotations: {}
+    labels:
+      app: spring-petclinic
+      app.kubernetes.io/component: spring-petclinic
+      app.kubernetes.io/instance: spring-petclinic
+      application: spring-petclinic
+    name: spring-petclinic
+  spec:
+    lookupPolicy:
+      local: false
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    labels:
+      app: spring-petclinic
+      app.kubernetes.io/component: spring-petclinic
+      app.kubernetes.io/instance: spring-petclinic
+      application: spring-petclinic
+    name: spring-petclinic
+  spec:
+    replicas: 1
+    selector:
+      matchLabels:
+        deploymentConfig: spring-petclinic
+    strategy:
+      type: RollingUpdate
+    template:
+      metadata:
+        annotations:
+          openshift.io/generated-by: OpenShiftNewApp
+        creationTimestamp: null
+        labels:
+          application: spring-petclinic
+          deploymentConfig: spring-petclinic
+        name: spring-petclinic
+      spec:
+        containers:
+          - imagePullPolicy: Always
+            image: image-registry.openshift-image-registry.svc:5000/demo-pipeline/spring-petclinic:latest
+            name: spring-petclinic
+            resources:
+              limits:
+                cpu: 200m
+                memory: 750Mi
+              requests:
+                cpu: 100m
+                memory: 500Mi
+            ports:
+              - containerPort: 8080
+                name: http
+                protocol: TCP
+              - containerPort: 8443
+                name: https
+                protocol: TCP
+        terminationGracePeriodSeconds: 150
+- apiVersion: tekton.dev/v1alpha1
+  kind: PipelineResource
+  metadata:
+    name: petclinic-image
+  spec:
+    type: image
+    params:
+    - name: url
+      value: image-registry.openshift-image-registry.svc:5000/demo-pipeline/spring-petclinic:latest
+- apiVersion: tekton.dev/v1alpha1
+  kind: PipelineResource
+  metadata:
+    name: petclinic-git
+  spec:
+    type: git
+    params:
+    - name: url
+      value: https://github.com/spring-projects/spring-petclinic
+- apiVersion: tekton.dev/v1alpha1
+  kind: Pipeline
+  metadata:
+    name: petclinic-s2i-pipeline
+  spec:
+    resources:
+    - name: app-git
+      type: git
+    - name: app-image
+      type: image
+    tasks:
+    - name: build-s2i
+      taskRef:
+        name: s2i-java-8
+        kind: ClusterTask
+      params:
+        - name: TLSVERIFY
+          value: "false"
+      resources:
+        inputs:
+        - name: source
+          resource: app-git
+        outputs:
+        - name: image
+          resource: app-image
