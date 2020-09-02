@@ -162,15 +162,14 @@ items:
     name: rollout-latest
   spec:
     params:
-      inputs:
-      - default: example
-        description: The name of the deployment to rollout
-        name: deployment
-        type: string
-      - default: example
-        description: The name of the namespace to rollout
-        name: namespace
-        type: string
+    - default: example
+      description: The name of the deployment to rollout
+      name: deployment
+      type: string
+    - default: example
+      description: The name of the namespace to rollout
+      name: namespace
+      type: string
     steps:
     - name: tag-and-rollout
       image: quay.io/openshift/origin-cli:latest
@@ -182,5 +181,5 @@ items:
       args:
       - |-
         set -e
-        oc rollout latest $(params.inputs.name) -n $(params.inputs.namespace) || true
-        oc rollout status $(params.inputs.name) -n $(params.inputs.namespace)
+        oc rollout latest $(params.name) -n $(params.namespace) || true
+        oc rollout status $(params.name) -n $(params.namespace)
