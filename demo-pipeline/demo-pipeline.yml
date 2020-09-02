@@ -171,7 +171,7 @@ items:
       name: namespace
       type: string
     steps:
-    - name: tag-and-rollout
+    - name: rollout
       image: quay.io/openshift/origin-cli:latest
       resources: {}
       workingDir: /workspace
@@ -181,5 +181,5 @@ items:
       args:
       - |-
         set -e
-        oc rollout latest $(params.deployment) -n $(params.namespace) || true
+        oc patch $(params.deployment) --patch "{\"spec\":{\"template\":{\"metadata\":{\"annotations\":{\"last-restart\":\"`date +'%s'`\"}}}}}" -n $(params.namespace)
         oc rollout status $(params.deployment) -n $(params.namespace)
